@@ -125,7 +125,7 @@ At the moment, it does not support newlines or prexisting input."
 
 Edit vterm commands in a separate buffer.")
 
-;; HACK: This is an hack-ish way to achieve the copy the command.
+;; HACK: This is a hack-ish way to achieve the copy the command.
 ;; It doesn't work if the command spans more lines and if the user
 ;; rebinds keys in an unusual way.  It also requires the location
 ;; of the prompt.  This should be improved

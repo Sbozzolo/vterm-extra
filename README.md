@@ -2,8 +2,8 @@
 
 # vterm-extra
 
-Improve the user experience in [vterm](https://github.com/akermu/emacs-libvterm) with convenience functions.
-PR are welcome.
+Improve the user experience in [vterm](https://github.com/akermu/emacs-libvterm)
+with convenience functions. PR are welcome.
 
 ## Installation
 
@@ -11,8 +11,22 @@ The most simple way to install this package is with `use-package`:
 ```emacs-lisp
 (use-package vterm-extra
               :load-path  "/path/of/the/repo/"
-              :bind ("s-t" . vterm-extra-dispatcher))
+              :bind (("s-t" . vterm-extra-dispatcher)
+                  :map vterm-mode-map
+                  (("C-c C-e" . vterm-extra-edit-command-in-new-buffer))))
 ```
+
+The spirit of this package is to provide a library of useful functions, without
+binding any to a keychord out of the box. Users should choose to one they find
+useful and bind them to the keybindings they like. A convenient way to do is the
+one reported in the previous snippet where we show how to define a keybinding
+that works everywhere in Emacs and one that works only in VTerm buffers.
+Alternatively, a more general approach to achieve the same result is
+```emacs-lisp
+(global-set-key (kbd "s-t") 'vterm-extra-dispatcher)
+(define-key vterm-mode-map (kbd "C-c C-e") 'vterm-extra-edit-command-in-new-buffer)
+```
+
 
 ## Functions available
 

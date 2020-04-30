@@ -28,6 +28,7 @@
 ;; with vterm.
 
 ;; Functions:
+
 ;; vterm-extra-dispatcher: Switch to a VTerm buffer or create a new one.
 
 ;; If there are no VTerm buffers, it creates a new one.
@@ -35,6 +36,17 @@
 ;; If the current buffer is a VTerm buffer, and there are other,
 ;; it prompts the user for a new one to select, and switches to that buffer.
 ;; With prefix argument, it always creates a new VTerm.
+
+;; vterm-extra-edit-command-in-new-buffer
+
+;; This function allows to edit commands in a separate temporary buffer.
+;; It kills the current command, create a temporary buffer.  When
+;; `vterm-extra-edit-done' is called (bound to `C-c C-c` by default), the
+;; content of the buffer is sent to the associated vterm.  This is done
+;; line by line, so the file has to be a valid multi-line command or series of
+;; commands.
+;; Current limitation: partially input commands that span multiple lines are
+;; not correctly transferred over the temporary buffer.
 
 ;;; Code:
 
@@ -88,6 +100,69 @@ With prefix argument ARG, always create a new VTerm."
       (if (eq num-vterm-buffers 0)
           (vterm)
         (vterm-extra--create-or-switch vterm-buffer-names)))))
+
+(defvar vterm-extra-edit-associated-buffer nil)
+
+(defun vterm-extra-edit-done ()
+  "Send command to the associated VTerm.
+
+At the moment, it does not support newlines or prexisting input."
+  (interactive)
+  (let ((command (buffer-string))
+        (associated-terminal vterm-extra-edit-associated-buffer))
+    (kill-buffer (current-buffer))
+    (pop-to-buffer associated-terminal)
+    (vterm-send-string command)))
+
+(defvar vterm-extra-edit-mode-map nil)
+(setq vterm-extra-edit-mode-map (make-sparse-keymap))
+
+(define-key vterm-extra-edit-mode-map (kbd "C-c C-c")
+  'vterm-extra-edit-done)
+
+(define-derived-mode vterm-extra-edit-mode sh-mode "VTermEdit"
+  "Vterm extra edit mode.
+
+Edit vterm commands in a separate buffer.")
+
+;; HACK: This is an hack-ish way to achieve the copy the command.
+;; It doesn't work if the command spans more lines and if the user
+;; rebinds keys in an unusual way.  It also requires the location
+;; of the prompt.  This should be improved
+
+(defun vterm-extra--kill-and-return-current-command ()
+  "Return the command in the current line after killing it.
+
+This is used to prepare the populate the buffer to edit commands."
+  (interactive)
+  (let ((command
+         (buffer-substring-no-properties (vterm--get-prompt-point) (vterm--get-end-of-line))))
+    (vterm-send-C-a)
+    (vterm-send-C-k)
+    command))
+
+;;;###autoload
+(defun vterm-extra-edit-command-in-new-buffer ()
+  "Edit the current VTerm command in a new buffer.
+
+If something is already on the prompt line, kill it and insert it
+in the temporary buffer.
+
+The temporary buffer will be sent back to the terminal with
+\\<vterm-extra-edit-mode-map>`\\[vterm-extra-edit-done]' line by
+line.  A trailing newline corresponds to sending return, hence to
+running the command.
+
+The local variable `vterm-extra-edit-associated-buffer' contains
+the associated VTerm buffer where the command will be inserted."
+  (interactive)
+  (let ((original-buffer (get-buffer (current-buffer)))
+        (command (vterm-extra--kill-and-return-current-command)))
+    (pop-to-buffer
+     (get-buffer-create (concat "*" (buffer-name) "*")))
+    (vterm-extra-edit-mode)
+    (insert command)
+    (setq-local vterm-extra-edit-associated-buffer original-buffer)))
 
 (provide 'vterm-extra)
 

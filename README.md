@@ -29,3 +29,19 @@ This function is particularly useful when VTerm buffers have names that indicate
 the associated hostname and path (see screenshot).
 
 ![screenshot](disp.png "vterm-extra-dispatcher")
+
+### `vterm-extra-edit-command-in-new-buffer`
+
+This function allows to edit commands in a separate temporary buffer. It kills
+the current command, create a temporary buffer. When `vterm-extra-edit-done' is
+called (bound to `C-c C-c` by default), the content of the buffer is sent to the
+associated vterm. This is done line by line, so the file has to be a valid
+multi-line command or series of commands. A trailing newline corresponds to
+sending the command.
+
+A current limitation is that partially
+input commands that span multiple lines are not correctly transferred over the
+temporary buffer.
+
+This function can be used to send a list of commands that are executed one after
+the other.

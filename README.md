@@ -27,7 +27,6 @@ Alternatively, a more general approach to achieve the same result is
 (define-key vterm-mode-map (kbd "C-c C-e") 'vterm-extra-edit-command-in-new-buffer)
 ```
 
-
 ## Functions available
 
 ### `vterm-extra-dispatcher`

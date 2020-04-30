@@ -136,7 +136,8 @@ Edit vterm commands in a separate buffer.")
 This is used to prepare the populate the buffer to edit commands."
   (interactive)
   (let ((command
-         (buffer-substring-no-properties (vterm--get-prompt-point) (vterm--get-end-of-line))))
+         (buffer-substring-no-properties
+          (vterm--get-prompt-point) (vterm--get-end-of-line))))
     (vterm-send-C-a)
     (vterm-send-C-k)
     command))

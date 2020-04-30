@@ -3,6 +3,7 @@
 # vterm-extra
 
 Improve the user experience in [vterm](https://github.com/akermu/emacs-libvterm) with convenience functions.
+PR are welcome.
 
 ## Installation
 
@@ -33,7 +34,7 @@ the associated hostname and path (see screenshot).
 ### `vterm-extra-edit-command-in-new-buffer`
 
 This function allows to edit commands in a separate temporary buffer. It kills
-the current command, create a temporary buffer. When `vterm-extra-edit-done' is
+the current command, create a temporary buffer. When `vterm-extra-edit-done` is
 called (bound to `C-c C-c` by default), the content of the buffer is sent to the
 associated vterm. This is done line by line, so the file has to be a valid
 multi-line command or series of commands. A trailing newline corresponds to

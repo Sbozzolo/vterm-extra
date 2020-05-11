@@ -138,7 +138,7 @@ This is used to prepare the populate the buffer to edit commands."
   (let ((command
          (buffer-substring-no-properties
           (vterm--get-prompt-point) (vterm--get-end-of-line))))
-    (vterm-send-C-a)
+    (vterm-beginning-of-line)
     (vterm-send-C-k)
     command))
 
@@ -147,7 +147,9 @@ This is used to prepare the populate the buffer to edit commands."
   "Edit the current VTerm command in a new buffer.
 
 If something is already on the prompt line, kill it and insert it
-in the temporary buffer.
+in the temporary buffer.  At the moment, this requires some shell-side
+configurations to enable the prompt detection and to make sure that
+the line is killed by `vterm-extra--kill-and-return-current-command'.
 
 The temporary buffer will be sent back to the terminal with
 \\<vterm-extra-edit-mode-map>`\\[vterm-extra-edit-done]' line by

@@ -53,9 +53,15 @@ associated vterm. This is done line by line, so the file has to be a valid
 multi-line command or series of commands. A trailing newline corresponds to
 sending the command.
 
-A current limitation is that partially
-input commands that span multiple lines are not correctly transferred over the
-temporary buffer.
+At the moment, `vterm-extra-edit-command-in-new-buffer` works only if `C-k` is
+bound to `kill-line` in the shell and if vterm is able to detect the prompt. To
+make sure that `C-k` kills the line, add `bind "\C-k":kill-line` to your
+`.bashrc` (for bash), or `bindkye "\C-k" kill-line` in your `.zshrc` (for zsh).
+To configure the prompt detection in vterm, follow the [official
+readme](https://github.com/akermu/emacs-libvterm#directory-tracking-and-prompt-tracking).
+
+A current limitation is that partially input commands that span multiple lines
+are not correctly transferred over the temporary buffer.
 
 This function can be used to send a list of commands that are executed one after
 the other.

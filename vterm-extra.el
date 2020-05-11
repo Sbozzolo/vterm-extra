@@ -110,7 +110,7 @@ At the moment, it does not support newlines or prexisting input."
   (interactive)
   (let ((command (buffer-string))
         (associated-terminal vterm-extra-edit-associated-buffer))
-    (kill-buffer (current-buffer))
+    (kill-buffer-and-window)
     (pop-to-buffer associated-terminal)
     (vterm-send-string command)))
 

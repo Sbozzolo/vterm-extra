@@ -114,6 +114,17 @@ At the moment, it does not support newlines or prexisting input."
     (pop-to-buffer associated-terminal)
     (vterm-send-string command)))
 
+(defun vterm-extra-edit-done-delete-window ()
+  "Send command to the associated VTerm, then delete current buffer.
+
+At the moment, it does not support newlines or prexisting input."
+  (interactive)
+  (let ((command (buffer-string))
+        (associated-terminal vterm-extra-edit-associated-buffer))
+    (kill-buffer-and-window)
+    (pop-to-buffer associated-terminal)
+    (vterm-send-string command)))
+
 (defvar vterm-extra-edit-mode-map nil)
 (setq vterm-extra-edit-mode-map (make-sparse-keymap))
 

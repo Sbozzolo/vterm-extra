@@ -60,3 +60,8 @@ temporary buffer.
 
 This function can be used to send a list of commands that are executed one after
 the other.
+
+### `vterm-extra-edit-done-delete-window`
+
+This function works the same as `vterm-extra-edit-done`, plus delete the
+temporary buffer window.

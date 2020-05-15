@@ -71,7 +71,7 @@ exclude it."
                                       nil t)))
     (if (string= user-choice "New VTerm")
         (vterm)
-      (pop-to-buffer user-choice))))
+      (pop-to-buffer-same-window user-choice))))
 
 ;; This function was inspired by Mike Zamansky's eshell-switcher
 ;; https://cestlaz.github.io/post/using-emacs-66-eshell-elisp/

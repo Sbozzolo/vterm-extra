@@ -138,7 +138,7 @@ This is used to prepare the populate the buffer to edit commands."
   (let ((command
          (buffer-substring-no-properties
           (vterm--get-prompt-point) (vterm--get-end-of-line))))
-    (vterm-beginning-of-line)
+    (vterm-send-C-a)
     (vterm-send-C-k)
     command))
 
